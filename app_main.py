@@ -48,5 +48,10 @@ if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
     scheduler_thread.daemon = True
     scheduler_thread.start()
 
+# Ensure the instance directory exists
+#instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
+#if not os.path.exists(instance_path):
+#    os.makedirs(instance_path)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

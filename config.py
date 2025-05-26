@@ -6,10 +6,10 @@ load_dotenv()
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(32)
-    SQLALCHEMY_DATABASE_URI = "sqlite:///instance/jantafile.db"  # Updated line
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance/jantafile.db')  # Fixed
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'
-    MAX_CONTENT_LENGTH = 25 * 1024 * 1024  # 25MB
+    MAX_CONTENT_LENGTH = 25 * 1024 * 1024
     ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'docx', 'xlsx'}
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
@@ -25,4 +25,4 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///instance/jantafile.db"  # Updated line
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance/jantafile.db')  # Fixed
