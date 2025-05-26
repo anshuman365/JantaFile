@@ -13,15 +13,6 @@ class SecurityUtils:
         """Lazily initialize and return the Fernet cipher."""
         if cls._cipher is None:
             encryption_key = os.getenv('ENCRYPTION_KEY')
-            
-            # --- DEBUGGING FOR ENCRYPTION_KEY IN _get_cipher ---
-            print(f"DEBUG (_get_cipher): Raw ENCRYPTION_KEY from os.getenv: '{encryption_key}'")
-            print(f"DEBUG (_get_cipher): Type of ENCRYPTION_KEY: {type(encryption_key)}")
-            if encryption_key:
-                print(f"DEBUG (_get_cipher): Length of ENCRYPTION_KEY: {len(encryption_key)}")
-                print(f"DEBUG (_get_cipher): ENCRYPTION_KEY ends with '=': {encryption_key.endswith('=')}")
-                print(f"DEBUG (_get_cipher): ENCRYPTION_KEY contains whitespace: {' ' in encryption_key or '\\n' in encryption_key or '\\r' in encryption_key}")
-            # --- END DEBUGGING ---
 
             if not encryption_key:
                 raise ValueError("ENCRYPTION_KEY environment variable is not set.")
