@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Submission Details - Admin - JantaFile{% endblock %}
+
+{% block content %}
+<section class="py-16 md:py-24 bg-gray-900 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto bg-gray-800 rounded-xl shadow-xl p-8 border-b-4 border-blue-500">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-blue-400">Submission Details (#{{ entry.id }})</h2>
+                <a href="{{ url_for('admin.view_shared_data') }}" 
+                   class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Submissions
+                </a>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-blue-300 mb-4">Submission Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+                        <div><strong>Title:</strong> {{ entry.title if entry.title else 'N/A' }}</div>
+                        <div><strong>Submission Code:</strong> {{ entry.submission_code }}</div>
+                        <div class="md:col-span-2"><strong>Description:</strong> <p class="whitespace-pre-wrap">{{ entry.description }}</p></div>
+                        <div><strong>Submitted At:</strong> {{ entry.submitted_at.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                        <div><strong>IP Hash:</strong> <span class="text-xs">{{ entry.ip_hash }}</span></div>
+                        <div><strong>Contact Method:</strong> {{ entry.contact_method if entry.contact_method else 'N/A' }}</div>
+                        <div><strong>Contact Info:</strong> {{ entry.decrypted_contact }}</div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-blue-300 mb-4">Associated Files</h3>
+                    {% if entry.files %}
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {% for file_path in entry.files %}
+                                {% set filename_parts = file_path.split('/')[-1].split('_', 1) %}
+                                {% set file_hash = filename_parts[0] %}
+                                {% set original_filename_encrypted_ext = filename_parts[1] %}
+                                {% set original_filename = original_filename_encrypted_ext.rsplit('.', 1)[0] %}
+                                {% set file_extension = original_filename.rsplit('.', 1)[1].lower() if '.' in original_filename else '' %}
+
+                                <div class="bg-gray-600 p-4 rounded-lg flex flex-col items-center justify-between shadow-sm">
+                                    <div class="text-center mb-3">
+                                        <i class="fas fa-file text-4xl text-gray-400 mb-2"></i>
+                                        <p class="text-gray-200 font-medium break-words">{{ original_filename }}</p>
+                                    </div>
+                                    <div class="w-full flex justify-center space-x-2">
+                                        {% if file_extension == 'pdf' %}
+                                            <button onclick="openPdfViewer('{{ url_for('admin.serve_decrypted_file', file_hash=file_hash, original_filename=original_filename) }}')"
+                                                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
+                                                <i class="fas fa-eye mr-2"></i> View PDF
+                                            </button>
+                                            <a href="{{ url_for('admin.serve_decrypted_file', file_hash=file_hash, original_filename=original_filename) }}?download=true" 
+                                               class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
+                                                <i class="fas fa-download mr-2"></i> Download
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url_for('admin.serve_decrypted_file', file_hash=file_hash, original_filename=original_filename) }}?download=true" 
+                                               class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
+                                                <i class="fas fa-download mr-2"></i> Download
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-center text-gray-400">No files submitted with this entry.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PDF Viewer Modal -->
+<div id="pdf-viewer-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-800 rounded-lg shadow-xl w-11/12 h-5/6 flex flex-col">
+        <div class="flex justify-between items-center p-4 border-b border-gray-700">
+            <h3 class="text-xl font-bold text-blue-400">PDF Viewer</h3>
+            <button onclick="closePdfViewer()" class="text-gray-400 hover:text-red-400 text-2xl font-bold">&times;</button>
+        </div>
+        <div class="flex-grow p-4 overflow-auto relative">
+            <div id="pdf-loading" class="absolute inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center">
+                <div class="text-blue-400 text-lg">
+                    <i class="fas fa-spinner fa-spin mr-2"></i> Loading PDF...
+                </div>
+            </div>
+            <object id="pdf-object" data="" type="application/pdf" class="w-full h-full hidden">
+                <p class="text-red-400">PDF cannot be displayed. Please download the file instead.</p>
+            </object>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openPdfViewer(pdfUrl) {
+        const modal = document.getElementById('pdf-viewer-modal');
+        const loading = document.getElementById('pdf-loading');
+        const pdfObject = document.getElementById('pdf-object');
+        
+        // Show modal and loading state
+        modal.classList.remove('hidden');
+        loading.classList.remove('hidden');
+        pdfObject.classList.add('hidden');
+
+        // Set up error handling
+        pdfObject.onload = () => {
+            loading.classList.add('hidden');
+            pdfObject.classList.remove('hidden');
+        };
+        
+        pdfObject.onerror = () => {
+            loading.classList.add('hidden');
+            alert('Failed to load PDF document');
+            closePdfViewer();
+        };
+
+        // Load the PDF with cache busting
+        pdfObject.data = pdfUrl + '#toolbar=1&navpanes=1&scrollbar=1&' + Date.now();
+    }
+
+    function closePdfViewer() {
+        const modal = document.getElementById('pdf-viewer-modal');
+        const pdfObject = document.getElementById('pdf-object');
+        modal.classList.add('hidden');
+        pdfObject.data = '';
+        pdfObject.classList.add('hidden');
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('pdf-viewer-modal');
+        if (event.target === modal) {
+            closePdfViewer();
+        }
+    });
+
+    // Close on ESC key
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closePdfViewer();
+        }
+    });
+</script>
+{% endblock %}

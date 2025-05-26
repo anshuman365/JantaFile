@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ episode.title }} - JantaFile{% endblock %}
+
+{% block content %}
+<header class="bg-gray-800 text-white pt-24 pb-16 md:pt-32 md:pb-24 text-center shadow-inner">
+    <div class="container mx-auto px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-down">
+            {{ episode.title }}
+        </h1>
+        <p class="text-xl md:text-2xl opacity-90 animate-fade-in-up">
+            Published: {{ episode.published_at.strftime('%B %d, %Y') }}
+        </p>
+    </div>
+</header>
+
+<section class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <div class="bg-gray-800 rounded-xl shadow-xl p-8 border-b-4 border-blue-500 animate-fade-in">
+            <img src="https://placehold.co/800x450/4299e1/ffffff?text={{ episode.title | urlencode }}" alt="{{ episode.title }} Thumbnail" class="rounded-lg mb-8 w-full h-auto object-cover">
+
+            <h2 class="text-3xl font-semibold text-white mb-4">Investigation Summary</h2>
+            <p class="text-gray-300 text-lg leading-relaxed mb-8">
+                {{ episode.description }}
+            </p>
+
+            {% if episode.youtube_id %}
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold text-white mb-4">Watch Episode</h2>
+                <div class="relative" style="padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                    <iframe
+                        class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
+                        src="https://www.youtube.com/embed/{{ episode.youtube_id }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if episode.tags %}
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold text-white mb-4">Tags</h2>
+                <div class="flex flex-wrap gap-3">
+                    {% for tag in episode.tags %}
+                        <span class="bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-md">
+                            {{ tag }}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if episode.documents %}
+            <div class="mb-8">
+                <h2 class="text-3xl font-semibold text-white mb-4">Supporting Documents</h2>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    {% for doc in episode.documents %}
+                        <li>
+                            <a href="{{ doc.url }}" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">
+                                <i class="fas fa-file-alt mr-2"></i> {{ doc.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="text-center mt-12">
+                <a href="/episodes" class="inline-block bg-gray-600 text-white hover:bg-gray-700 font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Episodes
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}{% if episode %}Edit Episode{% else %}Add New Episode{% endif %} - JantaFile{% endblock %}
+
+{% block content %}
+<section class="py-16 md:py-24 bg-gray-900 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto bg-gray-800 rounded-xl shadow-xl p-8 border-b-4 border-blue-500">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-blue-400">{% if episode %}Edit Episode{% else %}Add New Episode{% endif %}</h2>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-6">
+                        {% for category, message in messages %}
+                            <div class="p-3 rounded-lg {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white mb-2">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ form_action }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <div class="space-y-4">
+                    <div>
+                        <label for="title" class="block text-gray-300 text-sm font-bold mb-2">Title *</label>
+                        <input type="text" id="title" name="title" required
+                               class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                               value="{{ episode.title if episode else '' }}">
+                    </div>
+                    
+                    <div>
+                        <label for="description" class="block text-gray-300 text-sm font-bold mb-2">Description *</label>
+                        <textarea id="description" name="description" rows="8" required
+                                  class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                                  placeholder="Detailed description of the episode">{{ episode.description if episode else '' }}</textarea>
+                    </div>
+
+                    <div>
+                        <label for="youtube_id" class="block text-gray-300 text-sm font-bold mb-2">YouTube ID *</label>
+                        <input type="text" id="youtube_id" name="youtube_id" required
+                               class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                               value="{{ episode.youtube_id if episode else '' }}"
+                               placeholder="e.g., dQw4w9WgXcQ">
+                    </div>
+
+                    <div>
+                        <label for="tags" class="block text-gray-300 text-sm font-bold mb-2">Tags (comma-separated)</label>
+                        <input type="text" id="tags" name="tags"
+                               class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                               value="{{ ', '.join(episode.tags) if episode and episode.tags else '' }}"
+                               placeholder="e.g., security, privacy, data, investigation">
+                    </div>
+
+                    <div>
+                        <label for="encrypted_docs_files" class="block text-gray-300 text-sm font-bold mb-2">Upload Associated Documents (Optional)</label>
+                        <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+                            <input type="file" id="encrypted_docs_files" name="encrypted_docs_files" multiple 
+                                   class="hidden" accept=".pdf,.docx,.xlsx,.jpg,.png">
+                            <label for="encrypted_docs_files" class="cursor-pointer">
+                                <div class="text-gray-400 mb-2">
+                                    <i class="fas fa-cloud-upload-alt text-4xl"></i>
+                                </div>
+                                <span class="text-blue-400 font-medium">Drag files or click to upload</span>
+                                <p class="text-sm text-gray-400 mt-1">Max 25MB per file • Encrypted storage</p>
+                            </label>
+                            <div id="file-list" class="mt-4 space-y-2 text-left">
+                                {% if episode and episode.encrypted_docs %}
+                                    {% for doc_path in episode.encrypted_docs %}
+                                        <div class="flex items-center justify-between bg-gray-700 p-2 rounded">
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fas fa-file text-gray-400"></i>
+                                                <span class="text-gray-300">{{ doc_path.split('/')[-1] }}</span>
+                                            </div>
+                                            </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-all">
+                    {% if episode %}Update Episode{% else %}Add Episode{% endif %} <i class="fas fa-save ml-2"></i>
+                </button>
+                <a href="{{ url_for('admin.dashboard') }}" class="w-full block text-center mt-4 text-gray-400 hover:text-blue-400">
+                    Back to Dashboard
+                </a>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+// File upload handling for the form
+const fileInput = document.getElementById('encrypted_docs_files');
+const fileList = document.getElementById('file-list');
+
+fileInput.addEventListener('change', () => {
+    // Clear only newly selected files, keep existing ones if editing
+    // For simplicity, this clears and re-adds all. A more robust solution
+    // would distinguish between existing and new files.
+    fileList.innerHTML = ''; 
+    
+    // Add previously existing files if editing
+    {% if episode and episode.encrypted_docs %}
+        {% for doc_path in episode.encrypted_docs %}
+            const existingDiv = document.createElement('div');
+            existingDiv.className = 'flex items-center justify-between bg-gray-700 p-2 rounded';
+            existingDiv.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-file text-gray-400"></i>
+                    <span class="text-gray-300">{{ doc_path.split('/')[-1] }} (Existing)</span>
+                </div>
+            `;
+            fileList.appendChild(existingDiv);
+        {% endfor %}
+    {% endif %}
+
+    // Add newly selected files
+    Array.from(fileInput.files).forEach(file => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between bg-gray-700 p-2 rounded';
+        div.innerHTML = `
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-file text-gray-400"></i>
+                <span class="text-gray-300">${file.name}</span>
+                <span class="text-sm text-gray-500">(${(file.size/1024/1024).toFixed(2)}MB)</span>
+            </div>
+            `;
+        fileList.appendChild(div);
+    });
+});
+</script>
+{% endblock %}
+

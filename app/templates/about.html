@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}About Us - JantaFile{% endblock %}
+
+{% block content %}
+<header class="bg-gray-800 text-white pt-24 pb-16 md:pt-32 md:pb-24 text-center shadow-inner">
+    <div class="container mx-auto px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-down">
+            About JantaFile
+        </h1>
+        <p class="text-xl md:text-2xl opacity-90 animate-fade-in-up">
+            Our Mission, Vision, and Values
+        </p>
+    </div>
+</header>
+
+    <section class="py-16 md:py-24 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
+                <div class="lg:w-1/2 animate-fade-in">
+                    <img src="https://placehold.co/600x400/3182ce/ffffff?text=Our+Mission" alt="Our Mission" class="rounded-xl shadow-2xl w-full h-auto object-cover transform hover:scale-105 transition duration-300 ease-in-out">
+                </div>
+                <div class="lg:w-1/2 text-center lg:text-left animate-fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-blue-400">Our Mission</h2>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        At JantaFile, our mission is to empower the common citizen by bringing to light the hidden truths and systemic irregularities that affect Indian society. We are committed to unbiased, fact-based investigative journalism, relying solely on verifiable data and official documents. Our goal is to foster transparency, accountability, and informed public discourse.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-16">
+                <div class="lg:w-1/2 animate-fade-in">
+                    <img src="https://placehold.co/600x400/667eea/ffffff?text=Our+Vision" alt="Our Vision" class="rounded-xl shadow-2xl w-full h-auto object-cover transform hover:scale-105 transition duration-300 ease-in-out">
+                </div>
+                <div class="lg:w-1/2 text-center lg:text-right animate-fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-indigo-400">Our Vision</h2>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        We envision an India where information is freely accessible, and power structures are held accountable. JantaFile aims to be the most trusted source for investigative content, inspiring a generation of citizens to question, verify, and demand justice. We strive to be a catalyst for positive change, contributing to a more just and equitable society.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2 animate-fade-in">
+                    <img src="https://placehold.co/600x400/9f7aea/ffffff?text=Our+Values" alt="Our Values" class="rounded-xl shadow-2xl w-full h-auto object-cover transform hover:scale-105 transition duration-300 ease-in-out">
+                </div>
+                <div class="lg:w-1/2 text-center lg:text-left animate-fade-in-up">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-purple-400">Our Core Values</h2>
+                    <ul class="list-disc list-inside text-lg text-gray-300 space-y-3">
+                        <li>**Truth & Integrity:** Unwavering commitment to factual accuracy and ethical reporting.</li>
+                        <li>**Transparency:** Revealing the 'system behind the system' through verifiable evidence.</li>
+                        <li>**Anonymity:** Protecting the identity of our sources at all costs.</li>
+                        <li>**Impact:** Driving meaningful change through our investigations.</li>
+                        <li>**Public Service:** Serving the public interest above all else.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-gray-800 text-center">
+        <div class="container mx-auto px-4 animate-fade-in-up">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-blue-400">Join Us in the Pursuit of Truth</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+                Your support and shared information are crucial to our mission. Together, we can shed light on the darkest corners and bring about the change we wish to see.
+            </p>
+            <a href="/share-data" class="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                Share Information Confidentially <i class="fas fa-shield-alt ml-2"></i>
+            </a>
+        </div>
+    </section>
+    {% block scripts %}
+        <script>
+        // Toggle mobile navigation menu
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-content').classList.toggle('hidden');
+        });
+    </script>
+{% endblock %}
+{% endblock %}

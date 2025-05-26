@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Shared Data - Admin - JantaFile{% endblock %}
+
+{% block content %}
+<section class="py-16 md:py-24 bg-gray-900 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto bg-gray-800 rounded-xl shadow-xl p-8 border-b-4 border-blue-500">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-blue-400">Shared Data Submissions</h2>
+                <a href="{{ url_for('admin.dashboard') }}" 
+                   class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Episode Management
+                </a>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-6">
+                        {% for category, message in messages %}
+                            <div class="p-3 rounded-lg {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white mb-2">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% if shared_data_entries %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-gray-700 rounded-lg shadow-md">
+                        <thead>
+                            <tr class="bg-gray-600 text-left text-gray-300 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">ID</th>
+                                <th class="py-3 px-6 text-left">Title</th>
+                                <th class="py-3 px-6 text-left">Description</th>
+                                <th class="py-3 px-6 text-left">Submission Code</th>
+                                <th class="py-3 px-6 text-left">Contact Method</th>
+                                <th class="py-3 px-6 text-left">Contact Info</th>
+                                <th class="py-3 px-6 text-center">Submitted At</th>
+                                <th class="py-3 px-6 text-center">Files</th>
+                                <th class="py-3 px-6 text-center">IP Hash</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-200 text-sm font-light">
+                            {% for entry in shared_data_entries %}
+                            <tr class="border-b border-gray-600 hover:bg-gray-650">
+                                <td class="py-3 px-6 text-left whitespace-nowrap">{{ entry.id }}</td>
+                                <td class="py-3 px-6 text-left">{{ entry.title if entry.title else 'N/A' }}</td>
+                                <td class="py-3 px-6 text-left max-w-xs overflow-hidden text-ellipsis">{{ entry.description }}</td>
+                                <td class="py-3 px-6 text-left">{{ entry.submission_code }}</td>
+                                <td class="py-3 px-6 text-left">{{ entry.contact_method if entry.contact_method else 'N/A' }}</td>
+                                <td class="py-3 px-6 text-left">
+                                    {{ entry.decrypted_contact }}
+                                </td>
+                                <td class="py-3 px-6 text-center">{{ entry.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td class="py-3 px-6 text-center">
+                                    {% if entry.files %}
+                                        <ul class="list-disc list-inside text-left">
+                                            {% for file_path in entry.files %}
+                                                <li>{{ file_path.split('/')[-1] }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        No Files
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 px-6 text-left text-xs">{{ entry.ip_hash }}</td>
+                                <td class="py-3 px-6 text-center">
+                                    <a href="{{ url_for('admin.view_shared_data_detail', data_id=entry.id) }}"
+                                       class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center justify-center">
+                                        <i class="fas fa-info-circle mr-2"></i> View Details
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-center text-gray-400">No shared data submissions found yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

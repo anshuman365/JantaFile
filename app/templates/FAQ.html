@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}FAQ - JantaFile{% endblock %}
+
+{% block content %}
+    <section class="py-16 md:py-24 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in">
+                    <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                        What kind of content does JantaFile produce?
+                        <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                    </div>
+                    <div class="accordion-content text-gray-300 mt-4">
+                        JantaFile produces investigative video content focused on exposing illegal activities, corruption, and systemic irregularities within Indian society. Our content is strictly based on verified documents, data, and credible sources.
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in" style="animation-delay: 0.1s;">
+                    <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                        Why don't you show faces in your videos?
+                        <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                    </div>
+                    <div class="accordion-content text-gray-300 mt-4">
+                        We prioritize the truth and the information itself over individual personalities. Not showing faces helps maintain focus on the facts, protects our team and sources, and ensures that the message is the central element.
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                        How can I submit information or tips to JantaFile?
+                        <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                    </div>
+                    <div class="accordion-content text-gray-300 mt-4">
+                        You can submit information confidentially through our "Share Data" page. We have a secure form designed to protect your anonymity. Please provide as much detail and supporting documents as possible.
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in" style="animation-delay: 0.3s;">
+                    <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                        Is my anonymity guaranteed if I share information?
+                        <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                    </div>
+                    <div class="accordion-content text-gray-300 mt-4">
+                        Yes, absolutely. Protecting our sources is paramount. We employ strict protocols to ensure your identity remains confidential. We will never reveal your identity without your explicit consent.
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                        How do you verify the information you receive?
+                        <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                    </div>
+                    <div class="accordion-content text-gray-300 mt-4">
+                        Our team conducts rigorous fact-checking. We cross-reference information with multiple independent sources, analyze official documents, and consult experts to ensure every detail is accurate and verifiable before it's presented.
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in" style="animation-delay: 0.5s;">
+                    <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                        How can I support JantaFile's mission?
+                        <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                    </div>
+                    <div class="accordion-content text-gray-300 mt-4">
+                        You can support us by subscribing to our YouTube channel, watching and sharing our videos, engaging with our content, and most importantly, by sharing credible information that helps us expose the truth.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-gray-800 text-center">
+        <div class="container mx-auto px-4 animate-fade-in-up">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-blue-400">Still Have Questions?</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+                If you couldn't find the answer you were looking for, or if you have sensitive information to share, please don't hesitate to reach out.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/share-data" class="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                    Share Information <i class="fas fa-lock ml-2"></i>
+                </a>
+                <a href="{{ url_for('main.contact') }}" class="bg-gray-600 text-white hover:bg-gray-700 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                    General Inquiry <i class="fas fa-envelope ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+{% block scripts %}
+    <script>
+        // Toggle mobile navigation menu
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-content').classList.toggle('hidden');
+        });
+
+        // Accordion functionality for FAQ
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+
+                // Close other open accordions
+                document.querySelectorAll('.accordion-content.active').forEach(openContent => {
+                    if (openContent !== content) {
+                        openContent.classList.remove('active');
+                        openContent.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+
+                // Toggle current accordion
+                content.classList.toggle('active');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+    </script>
+{% endblock %}
+{% endblock %}

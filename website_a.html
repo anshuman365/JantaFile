@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>मेरी शानदार वेबसाइट</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light blue-gray background */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #60a5fa;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <nav class="bg-gradient-to-r from-blue-600 to-blue-800 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center flex-wrap">
+            <a href="#" class="text-white text-3xl font-bold rounded-lg p-2 hover:bg-blue-700 transition duration-300">मेरी वेबसाइट</a>
+            <div class="block lg:hidden">
+                <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-white hover:border-white">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-6z"/></svg>
+                </button>
+            </div>
+            <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden" id="nav-content">
+                <ul class="text-xl lg:flex-grow lg:flex lg:justify-end">
+                    <li><a href="#home" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6 transition duration-300">होम</a></li>
+                    <li><a href="#features" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6 transition duration-300">विशेषताएँ</a></li>
+                    <li><a href="#about" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-6 transition duration-300">हमारे बारे में</a></li>
+                    <li><a href="#contact" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white transition duration-300">संपर्क</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white py-20 md:py-32 text-center shadow-inner">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-down">
+                आपका स्वागत है हमारी दुनिया में!
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 opacity-90 animate-fade-in-up">
+                यहाँ आपको वह सब मिलेगा जिसकी आपको तलाश है।
+            </p>
+            <button class="bg-white text-blue-700 hover:bg-blue-100 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                और जानें
+            </button>
+        </div>
+    </header>
+
+    <section id="features" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-blue-800">हमारी मुख्य विशेषताएँ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="bg-white rounded-xl shadow-xl p-8 transform hover:scale-105 transition duration-300 ease-in-out border-b-4 border-blue-500">
+                    <div class="text-blue-600 text-5xl mb-6 text-center">
+                        <svg class="h-16 w-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9.75 12L12 12L12 17L9.75 17ZM12 7L12 12L14.25 12L14.25 7L12 7ZM19.5 12L19.5 17L17.25 17L17.25 12L19.5 12ZM19.5 7L19.5 12L17.25 12L17.25 7L19.5 7ZM4.5 12L4.5 17L2.25 17L2.25 12L4.5 12ZM4.5 7L4.5 12L2.25 12L2.25 7L4.5 7Z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-center mb-4 text-gray-900">आधुनिक डिज़ाइन</h3>
+                    <p class="text-gray-600 text-center">एक स्वच्छ, आधुनिक और उपयोगकर्ता के अनुकूल डिज़ाइन जो आपकी आँखों को भाएगा।</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-xl p-8 transform hover:scale-105 transition duration-300 ease-in-out border-b-4 border-indigo-500">
+                    <div class="text-indigo-600 text-5xl mb-6 text-center">
+                        <svg class="h-16 w-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8.75 12H12m0 0h3.25M12 12V6m0 6v6"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-center mb-4 text-gray-900">पूरी तरह से प्रतिक्रियाशील</h3>
+                    <p class="text-gray-600 text-center">मोबाइल, टैबलेट और डेस्कटॉप सहित सभी उपकरणों पर शानदार दिखती है।</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-xl p-8 transform hover:scale-105 transition duration-300 ease-in-out border-b-4 border-purple-500">
+                    <div class="text-purple-600 text-5xl mb-6 text-center">
+                        <svg class="h-16 w-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-center mb-4 text-gray-900">तेज और कुशल</h3>
+                    <p class="text-gray-600 text-center">बेहतर उपयोगकर्ता अनुभव के लिए अनुकूलित प्रदर्शन।</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 md:py-24 bg-blue-100">
+        <div class="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-10">
+            <div class="lg:w-1/2">
+                <img src="https://placehold.co/600x400/60a5fa/ffffff?text=हमारी+कहानी" alt="हमारी कहानी" class="rounded-xl shadow-2xl w-full h-auto object-cover transform hover:scale-105 transition duration-300 ease-in-out">
+            </div>
+            <div class="lg:w-1/2 text-center lg:text-left">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-blue-800">हमारे बारे में</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    हमारा मिशन एक ऐसी डिजिटल दुनिया बनाना है जहाँ हर कोई आसानी से जानकारी तक पहुँच सके और उसका उपयोग कर सके। हम मानते हैं कि डिज़ाइन और कार्यक्षमता का सही मिश्रण उपयोगकर्ताओं के लिए एक अविस्मरणीय अनुभव बनाता है। हमारी टीम जुनून और नवाचार के साथ काम करती है ताकि हम आपके लिए सर्वश्रेष्ठ ला सकें।
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    हमारा उद्देश्य केवल वेबसाइट बनाना नहीं, बल्कि ऐसे डिजिटल अनुभव तैयार करना है जो आपके लक्ष्यों को प्राप्त करने में आपकी मदद करें।
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-blue-800">हमसे संपर्क करें</h2>
+            <div class="max-w-xl mx-auto bg-white rounded-xl shadow-xl p-8 border-b-4 border-blue-500">
+                <p class="text-lg text-gray-700 mb-8">
+                    यदि आपके कोई प्रश्न हैं या आप किसी प्रोजेक्ट पर चर्चा करना चाहते हैं, तो बेझिझक हमसे संपर्क करें।
+                </p>
+                <form class="space-y-6">
+                    <div>
+                        <input type="text" placeholder="आपका नाम" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                    </div>
+                    <div>
+                        <input type="email" placeholder="आपकी ईमेल" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                    </div>
+                    <div>
+                        <textarea placeholder="आपका संदेश" rows="6" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"></textarea>
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                        संदेश भेजें
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-10 text-center">
+        <div class="container mx-auto px-4">
+            <p class="text-lg mb-4">&copy; 2025 मेरी शानदार वेबसाइट। सभी अधिकार सुरक्षित।</p>
+            <div class="flex justify-center space-x-6 text-2xl">
+                <a href="#" class="hover:text-blue-400 transition duration-300">
+                    <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012 10.77v.058a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.188a11.644 11.644 0 006.29 2.063z"></path>
+                    </svg>
+                </a>
+                <a href="#" class="hover:text-blue-400 transition duration-300">
+                    <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.776-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33V22C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+                    </svg>
+                </a>
+                <a href="#" class="hover:text-blue-400 transition duration-300">
+                    <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.002 3.797.048.85.044 1.45.174 1.879.344.467.197.81.425 1.15.765.34.34.568.683.765 1.15.17.429.3.99.344 1.879.046 1.013.048 1.367.048 3.797s-.002 2.784-.048 3.797c-.044.85-.174 1.45-.344 1.879-.197.467-.425.81-.765 1.15-.34.34-.683.568-1.15.765-.429.17-.99.3-1.879.344-1.013.046-1.367.048-3.797.048s-2.784-.002-3.797-.048c-.85-.044-1.45-.174-1.879-.344-.467-.197-.81-.425-1.15-.765-.34-.34-.568-.683-.765-1.15-.17-.429-.3-.99-.344-1.879-.046-1.013-.048-1.367-.048-3.797s.002-2.784.048-3.797c.044-.85.174-1.45.344-1.879.197-.467.425-.81.765-1.15.34-.34.683-.568 1.15-.765.429-.17.99-.3 1.879-.344C9.537 2.002 9.89 2 12.315 2zm0 2.166c-2.427 0-2.75.01-3.71.056-.78.04-1.25.15-1.503.25-.26.105-.46.24-.65.43-.19.19-.325.39-.43.65-.1.253-.21.723-.25 1.503-.046.96-.056 1.283-.056 3.71s.01 2.75.056 3.71c.04.78.15 1.25.25 1.503.105.26.24.46.43.65.19.19.39.325.65.43.253.1.723.21 1.503.25.96.046 1.283.056 3.71.056s2.75-.01 3.71-.056c.78-.04 1.25-.15 1.503-.25.26-.105.46-.24.65-.43.19-.19.325-.39.43-.65.1-.253.21-.723.25-1.503.046-.96.056-1.283.056-3.71s-.01-2.75-.056-3.71c-.04-.78-.15-1.25-.25-1.503-.105-.26-.24-.46-.43-.65-.19-.19-.39-.325-.65-.43-.253-.1-.723-.21-1.503-.25-.96-.046-1.283-.056-3.71-.056zM12 16.167a4.167 4.167 0 100-8.334 4.167 4.167 0 000 8.334zm0-6.834a2.667 2.667 0 110 5.334 2.667 2.667 0 010-5.334z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Close mobile menu after clicking a link
+                const navContent = document.getElementById('nav-content');
+                if (!navContent.classList.contains('hidden')) {
+                    navContent.classList.add('hidden');
+                }
+            });
+        });
+
+        // Toggle mobile navigation menu
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-content').classList.toggle('hidden');
+        });
+
+        // Simple interactive element: Change hero text on click (for demonstration)
+        const heroHeading = document.querySelector('#home h1');
+        let originalText = heroHeading.textContent;
+        let alternateText = "नवाचार और उत्कृष्टता की ओर एक कदम!";
+        let isOriginalText = true;
+
+        heroHeading.addEventListener('click', function() {
+            if (isOriginalText) {
+                heroHeading.textContent = alternateText;
+            } else {
+                heroHeading.textContent = originalText;
+            }
+            isOriginalText = !isOriginalText;
+        });
+    </script>
+</body>
+</html>
+

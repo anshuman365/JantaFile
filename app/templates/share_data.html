@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}Secure Submission - JantaFile{% endblock %}
+
+{% block content %}
+<section class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto bg-gray-800 rounded-xl shadow-xl p-8 border-b-4 border-blue-500">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-blue-400 mb-2">Secure Information Submission</h2>
+                <button id="show-security" class="text-gray-400 hover:text-blue-400 text-sm">
+                    View Security Protocols <i class="fas fa-shield-alt ml-1"></i>
+                </button>
+            </div>
+            
+            <form id="submission-form" class="space-y-6" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                
+                <div class="space-y-4">
+                    <input type="text" name="title" placeholder="Brief title (optional)" 
+                           class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500">
+                    
+                    <textarea name="description" rows="6" required
+                              class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                              placeholder="Detailed description of the issue *"></textarea>
+                    
+                    <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+                        <input type="file" id="file-upload" name="files" multiple 
+                               class="hidden" accept=".pdf,.docx,.xlsx,.jpg,.png">
+                        <label for="file-upload" class="cursor-pointer">
+                            <div class="text-gray-400 mb-2">
+                                <i class="fas fa-cloud-upload-alt text-4xl"></i>
+                            </div>
+                            <span class="text-blue-400 font-medium">Drag files or click to upload</span>
+                            <p class="text-sm text-gray-400 mt-1">Max 25MB per file • Encrypted storage</p>
+                        </label>
+                        <div id="file-list" class="mt-4 space-y-2 text-left"></div>
+                    </div>
+
+                    <div class="bg-gray-700 p-4 rounded-lg border border-gray-600">
+                        <p class="text-gray-300 font-semibold mb-3">Optional: How can we contact you regarding this submission?</p>
+                        
+                        <div class="mb-4">
+                            <label for="contact_method" class="block text-gray-400 text-sm font-bold mb-2">Preferred Contact Method</label>
+                            <select id="contact_method" name="contact_method"
+                                    class="w-full p-3 bg-gray-600 rounded-lg border border-gray-500 focus:ring-2 focus:ring-blue-500 text-gray-200">
+                                <option value="">-- Select --</option>
+                                <option value="Email">Email</option>
+                                <option value="Phone">Phone (Call/SMS)</option>
+                                <option value="Telegram">Telegram</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="contact_info" class="block text-gray-400 text-sm font-bold mb-2">Your Contact Detail (e.g., email, phone number, username)</label>
+                            <input type="text" id="contact_info" name="contact_info" 
+                                   class="w-full p-3 bg-gray-600 rounded-lg border border-gray-500 focus:ring-2 focus:ring-blue-500 text-gray-200"
+                                   placeholder="Your email, phone, Telegram username, etc.">
+                            <p class="text-xs text-gray-500 mt-1">This information will be encrypted and only accessible by authorized personnel.</p>
+                        </div>
+                    </div>
+                    </div>
+
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-all">
+                    Submit Securely <i class="fas fa-lock ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Placeholder for modal functions - you should implement these properly
+function showSubmissionModal(code) {
+    alert(`Submission successful! Your code is: ${code}`);
+    // In a real app, you'd show a custom modal with the code
+}
+
+function showErrorModal(message) {
+    alert(`Error: ${message}`);
+    // In a real app, you'd show a custom error modal
+}
+
+// File upload handling
+const fileInput = document.getElementById('file-upload');
+const fileList = document.getElementById('file-list');
+
+fileInput.addEventListener('change', () => {
+    fileList.innerHTML = ''; // Clear previous list
+    Array.from(fileInput.files).forEach(file => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between bg-gray-700 p-2 rounded';
+        div.innerHTML = `
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-file text-gray-400"></i>
+                <span class="text-gray-300">${file.name}</span>
+                <span class="text-sm text-gray-500">(${(file.size/1024/1024).toFixed(2)}MB)</span>
+            </div>
+            <button type="button" class="text-red-400 hover:text-red-300" onclick="this.parentElement.remove(); updateFileInput();">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        fileList.appendChild(div);
+    });
+});
+
+// Function to update the file input's files property after removal
+function updateFileInput() {
+    // This function is a placeholder. For a proper solution, you'd manage the files
+    // in a JavaScript array and then append them individually to FormData on submission.
+    // Direct modification of fileInput.files is not allowed.
+}
+
+
+// Form submission handling
+document.getElementById('submission-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+
+    // Basic client-side validation for description and files
+    const description = formData.get('description');
+    const files = formData.getAll('files');
+
+    if (!description || description.trim() === '') {
+        showErrorModal('Please provide a detailed description.');
+        return;
+    }
+
+    let hasActualFiles = false;
+    for (let i = 0; i < files.length; i++) {
+        if (files[i] && files[i].size > 0) {
+            hasActualFiles = true;
+            break;
+        }
+    }
+
+    if (!hasActualFiles) {
+        showErrorModal('Please select at least one file to upload.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/submit-data', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+
+        if (response.ok) {
+            showSubmissionModal(data.code);
+            e.target.reset();
+            fileList.innerHTML = '';
+        } else {
+            showErrorModal(data.error || 'Submission failed due to an unknown error.');
+        }
+    } catch (error) {
+        console.error('Network or submission error:', error);
+        showErrorModal('A network error occurred. Please check your connection and try again.');
+    }
+});
+</script>
+{% endblock %}
+

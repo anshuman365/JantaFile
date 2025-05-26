@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Episodes - JantaFile{% endblock %}
+
+{% block content %}
+<header class="bg-gray-800 text-white pt-24 pb-16 md:pt-32 md:pb-24 text-center shadow-inner">
+    <div class="container mx-auto px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-down">
+            All Investigations
+        </h1>
+        <p class="text-xl md:text-2xl opacity-90 animate-fade-in-up">
+            Dive deep into our investigations, one truth at a time.
+        </p>
+    </div>
+</header>
+
+<section class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div id="episode-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <p id="loading-episodes" class="text-center text-gray-400 text-lg col-span-full">
+                <i class="fas fa-spinner fa-spin mr-2"></i>Loading investigations...
+            </p>
+            <p id="no-episodes" class="text-center text-gray-400 text-lg col-span-full hidden">
+                No investigations found.
+            </p>
+            <p id="error-episodes" class="text-center text-red-500 text-lg col-span-full hidden">
+                <i class="fas fa-exclamation-triangle mr-2"></i>Failed to load investigations. Please try again later.
+            </p>
+        </div>
+
+        <div class="flex justify-center items-center space-x-4 mt-12">
+            <button id="prev-page-btn" class="bg-blue-600 text-white hover:bg-blue-700 font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+            </button>
+            <span id="page-info" class="text-white text-lg font-semibold">Page 1</span>
+            <button id="next-page-btn" class="bg-blue-600 text-white hover:bg-blue-700 font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                Next <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 md:py-24 bg-gray-800 text-center">
+    <div class="container mx-auto px-4 animate-fade-in-up">
+        <h2 class="text-4xl md:text-5xl font-bold mb-8 text-blue-400">Can't Find What You're Looking For?</h2>
+        <p class="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+            Use our search feature to find specific episodes or topics, or share information for a new investigation.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="/search" class="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                Go to Search Page <i class="fas fa-search ml-2"></i>
+            </a>
+            <a href="/share-data" class="bg-gray-600 text-white hover:bg-gray-700 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                Share Information <i class="fas fa-hand-holding-usd ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{%endblock%}
+
+{% block scripts %}
+<script>
+    // Toggle mobile navigation menu (from base.html)
+    document.getElementById('nav-toggle').addEventListener('click', function() {
+        document.getElementById('nav-content').classList.toggle('hidden');
+    });
+
+    // --- Episode Loading and Pagination Logic ---
+    const episodeGrid = document.getElementById('episode-grid');
+    const loadingEpisodes = document.getElementById('loading-episodes');
+    const noEpisodes = document.getElementById('no-episodes');
+    const errorEpisodes = document.getElementById('error-episodes');
+    const prevPageBtn = document.getElementById('prev-page-btn');
+    const nextPageBtn = document.getElementById('next-page-btn');
+    const pageInfo = document.getElementById('page-info');
+
+    let currentPage = 1; // Start on page 1
+
+    async function fetchEpisodes(page) {
+        episodeGrid.innerHTML = ''; // Clear previous episodes
+        loadingEpisodes.classList.remove('hidden'); // Show loading indicator
+        noEpisodes.classList.add('hidden');
+        errorEpisodes.classList.add('hidden');
+
+        try {
+            const response = await fetch(`/api/episodes?page=${page}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            loadingEpisodes.classList.add('hidden');
+
+            if (data.episodes && data.episodes.length > 0) {
+                data.episodes.forEach(episode => {
+                    const episodeCard = document.createElement('div');
+                    episodeCard.className = 'bg-gray-800 rounded-xl shadow-xl p-6 border-b-4 border-blue-500 transform hover:scale-105 transition duration-300 ease-in-out animate-fade-in';
+                    episodeCard.innerHTML = `
+                        <img src="https://placehold.co/400x225/4299e1/ffffff?text=Episode+${episode.id}" alt="${episode.title} Thumbnail" class="rounded-lg mb-4 w-full h-auto object-cover">
+                        <h3 class="text-2xl font-semibold mb-3 text-white">${episode.title}</h3>
+                        <p class="text-gray-300 text-sm mb-4">${episode.description}</p>
+                        <a href="/episodes/${episode.id}" class="inline-block bg-blue-600 text-white font-bold py-2 px-5 rounded-full hover:bg-blue-700 transition duration-300">View Details <i class="fas fa-arrow-right ml-2"></i></a>
+                    `;
+                    episodeGrid.appendChild(episodeCard);
+                });
+            } else {
+                noEpisodes.classList.remove('hidden');
+            }
+
+            // Update pagination controls
+            currentPage = data.page;
+            pageInfo.textContent = `Page ${data.page} of ${data.pages}`;
+            prevPageBtn.disabled = !data.has_prev;
+            nextPageBtn.disabled = !data.has_next;
+
+        } catch (error) {
+            console.error('Error fetching episodes:', error);
+            loadingEpisodes.classList.add('hidden');
+            errorEpisodes.classList.remove('hidden');
+            prevPageBtn.disabled = true;
+            nextPageBtn.disabled = true;
+        }
+    }
+
+    // Event listeners for pagination buttons
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            fetchEpisodes(currentPage - 1);
+        }
+    });
+
+    nextPageBtn.addEventListener('click', () => {
+        fetchEpisodes(currentPage + 1);
+    });
+
+    // Initial load of episodes when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchEpisodes(currentPage);
+    });
+</script>
+{% endblock %}
+

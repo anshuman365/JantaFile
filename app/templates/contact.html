@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Contact - JantaFile{% endblock %}
+
+{% block content %}
+<section class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto bg-gray-800 rounded-xl p-8">
+            <h2 class="text-3xl font-bold text-center mb-8 text-blue-400">Contact JantaFile</h2>
+            <p class="text-gray-300 mb-6 text-center">
+                For general inquiries, use our secure contact form below.
+                For sensitive information, please use the <a href="/share-data" class="text-blue-400">secure submission</a>.
+            </p>
+            <form class="space-y-6">
+                <input type="email" placeholder="Your Email" class="w-full p-3 bg-gray-700 rounded-lg">
+                <textarea rows="5" placeholder="Message" class="w-full p-3 bg-gray-700 rounded-lg"></textarea>
+                <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

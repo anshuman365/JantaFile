@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Search Investigations - JantaFile{% endblock %}
+
+{% block content %}
+<section class="bg-gray-900 py-16 md:py-24 font-sans">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto bg-gray-800 rounded-xl shadow-2xl overflow-hidden border border-blue-600">
+            <div class="px-8 py-10">
+                <h1 class="text-4xl font-extrabold text-white mb-8 text-center">Investigation Search Portal</h1>
+
+                <div class="relative flex items-center rounded-full shadow-lg">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                        <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search across 10,000+ documents, cases, and reports..."
+                        class="bg-gray-700 text-white placeholder-gray-400 block w-full pl-12 pr-6 py-4 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition duration-300 ease-in-out"
+                        aria-label="Search investigations"
+                        autocomplete="off"
+                    >
+                    <button id="search-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-r-full shadow-md transition duration-300 ease-in-out flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <i class="fas fa-search mr-2"></i> Search
+                    </button>
+                </div>
+                <p class="text-gray-400 text-sm mt-4 text-center">
+                    Results will update as you type, or click "Search" to find manually.
+                </p>
+            </div>
+
+            <div id="results-container" class="bg-gray-900 px-8 py-10 border-t border-gray-700">
+                <div class="text-center">
+                    <p class="text-gray-400 text-lg animate-pulse" id="loading-indicator">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Loading investigations...
+                    </p>
+                    <p class="text-gray-400 text-lg" id="initial-prompt" style="display: none;">
+                        <i class="fas fa-search mr-2"></i>Start typing to find investigations
+                    </p>
+                </div>
+            </div>
+
+            <div id="no-results" class="bg-gray-900 px-8 py-10 border-t border-gray-700 hidden">
+                <p class="text-gray-400 text-center text-lg">
+                    <i class="fas fa-folder-open mr-2"></i>No matching investigations found
+                </p>
+            </div>
+
+            <div id="error-message" class="bg-gray-900 px-8 py-10 border-t border-gray-700 hidden">
+                <p class="text-red-500 text-center text-lg">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Search temporarily unavailable. Please try again.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/search.js"></script>
+
+<script>
+    // Ensure the DOM is fully loaded before trying to access elements
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchHeader = document.querySelector('h1');
+        if (searchHeader) {
+            searchHeader.textContent = "Investigation Search Portal (Initializing...)";
+        }
+
+        // Check if SearchSystem class is available on the window object
+        if (typeof window.SearchSystem !== 'undefined') {
+            const searchSystem = new window.SearchSystem({
+                endpoint: '/api/search', // This endpoint now returns ALL episodes
+                resultsContainerId: 'results-container',
+                noResultsContainerId: 'no-results',
+                errorContainerId: 'error-message',
+                loadingIndicatorId: 'loading-indicator',
+                initialPromptId: 'initial-prompt',
+                searchButtonId: 'search-button'
+            });
+
+            // Revert header text after successful initialization
+            if (searchHeader) {
+                searchHeader.textContent = "Investigation Search Portal";
+            }
+
+            // Initial search if 'q' parameter is present in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialQuery = urlParams.get('q');
+            if (initialQuery) {
+                searchSystem.searchInput.value = initialQuery;
+                // No need to call handleSearch here, loadAllEpisodes will handle it
+                // after data is fetched, via its own initialQuery check.
+            }
+        } else {
+            // Fallback error message if SearchSystem is not found
+            // This part will now only be reached if search.js itself fails to load/execute
+            const resultsContainer = document.getElementById('results-container');
+            if (resultsContainer) {
+                resultsContainer.innerHTML = `
+                    <p class="text-red-500 text-center text-lg">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        A critical script failed to load. Search functionality is unavailable.
+                    </p>
+                `;
+            }
+        }
+    });
+</script>
+{% endblock %}
+

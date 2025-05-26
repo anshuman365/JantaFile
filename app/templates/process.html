@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Our Process - JantaFile{% endblock %}
+
+{% block content %}
+<header class="bg-gray-800 text-white pt-24 pb-16 md:pt-32 md:pb-24 text-center shadow-inner">
+    <div class="container mx-auto px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-down">
+            Our Investigative Process
+        </h1>
+        <p class="text-xl md:text-2xl opacity-90 animate-fade-in-up">
+            From Raw Data to Unveiling the Truth
+        </p>
+    </div>
+</header>
+
+    <section class="py-16 md:py-24 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-blue-400 animate-fade-in">How JantaFile Works</h2>
+            <div class="max-w-4xl mx-auto relative">
+                <div class="timeline-item animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="timeline-item-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3 class="text-3xl font-semibold mb-3 text-white">1. Tip-Off & Initial Assessment</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Every investigation begins with a lead – often a confidential tip from a brave individual, or an anomaly identified through our own monitoring. We conduct an initial assessment to gauge the credibility and potential impact of the information.
+                    </p>
+                </div>
+
+                <div class="timeline-item animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="timeline-item-icon"><i class="fas fa-search"></i></div>
+                    <h3 class="text-3xl font-semibold mb-3 text-white">2. Extensive Data Collection</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Our team dives deep into gathering all available data. This includes public records, government documents, financial statements, legal filings, and digital footprints. We leverage advanced tools and techniques to ensure comprehensive collection.
+                    </p>
+                </div>
+
+                <div class="timeline-item animate-fade-in" style="animation-delay: 0.6s;">
+                    <div class="timeline-item-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3 class="text-3xl font-semibold mb-3 text-white">3. Rigorous Document Analysis</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Raw data is meticulously analyzed. Our experts examine every document, cross-referencing information to identify patterns, discrepancies, and connections that might expose illegal activities or corruption. This is where "the file tells the truth."
+                    </p>
+                </div>
+
+                <div class="timeline-item animate-fade-in" style="animation-delay: 0.8s;">
+                    <div class="timeline-item-icon"><i class="fas fa-check-double"></i></div>
+                    <h3 class="text-3xl font-semibold mb-3 text-white">4. Multi-Source Fact-Checking</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Accuracy is paramount. Every claim, every piece of evidence is rigorously fact-checked against multiple independent sources. We leave no stone unturned to ensure the information we present is irrefutable.
+                    </p>
+                </div>
+
+                <div class="timeline-item animate-fade-in" style="animation-delay: 1.0s;">
+                    <div class="timeline-item-icon"><i class="fas fa-video"></i></div>
+                    <h3 class="text-3xl font-semibold mb-3 text-white">5. Content Production & Presentation</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Once verified, the findings are transformed into compelling video episodes. We focus on clear, concise, and impactful storytelling, using visuals and data representations to make complex issues understandable to the common viewer.
+                    </p>
+                </div>
+
+                <div class="timeline-item animate-fade-in" style="animation-delay: 1.2s;">
+                    <div class="timeline-item-icon"><i class="fas fa-bullhorn"></i></div>
+                    <h3 class="text-3xl font-semibold mb-3 text-white">6. Public Outreach & Impact</h3>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Our work doesn't end with publishing. We aim for real-world impact by ensuring our investigations reach a wide audience, sparking public debate, and encouraging authorities to take action. We believe in empowering citizens to demand accountability.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-gray-800 text-center">
+        <div class="container mx-auto px-4 animate-fade-in-up">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-blue-400">Have Information to Share?</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+                If you possess crucial documents or insights that could help us expose illegal activities, please reach out. Your anonymity is guaranteed.
+            </p>
+            <a href="/share-data" class="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out text-lg">
+                Share Data Confidentially <i class="fas fa-lock ml-2"></i>
+            </a>
+        </div>
+    </section>
+    {% block scripts %}
+    <script>
+        // Toggle mobile navigation menu
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-content').classList.toggle('hidden');
+        });
+    </script>
+{% endblock %}
+{% endblock %}
