@@ -23,7 +23,7 @@ app = create_app(config_class)
 
 # Self-pinging configuration
 PING_INTERVAL = 300  # 5 minutes
-APP_URL = os.getenv('APP_URL', 'http://localhost:5000')
+APP_URL = os.getenv('APP_URL', 'https://jantafile-youtube-care-support.onrender.com')
 
 def wake_up():
     while True:
