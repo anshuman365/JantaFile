@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from werkzeug.urls import url_parse
+from urllib.parse import urlparse
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db
 from app.models import User # Import the new User model
@@ -70,7 +70,7 @@ def login():
         
         # Redirect to the 'next' page if provided, otherwise to admin dashboard
         next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
+        if not next_page or urlparse(next_page).netloc != '':
             next_page = url_for('admin.dashboard') # Default redirect after login
         return redirect(next_page)
 
