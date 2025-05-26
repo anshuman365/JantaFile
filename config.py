@@ -6,7 +6,7 @@ load_dotenv()
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(32)
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:1234@localhost/jantafile"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///instance/jantafile.db"  # Updated line
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'
     MAX_CONTENT_LENGTH = 25 * 1024 * 1024  # 25MB
@@ -14,10 +14,8 @@ class Config:
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
-    # Add to Config class
     VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY')
     VAPID_PRIVATE_KEY = os.environ.get('VAPID_PRIVATE_KEY')
-
 
 class ProductionConfig(Config):
     pass
@@ -27,4 +25,4 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:1234@localhost/jantafile"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///instance/jantafile.db"  # Updated line
