@@ -102,13 +102,6 @@ def submit_data():
 
     encryption_key = os.getenv('ENCRYPTION_KEY')
 
-    print(f"DEBUG (routes.py): Raw ENCRYPTION_KEY from os.getenv: '{encryption_key}'")
-    print(f"DEBUG (routes.py): Type of ENCRYPTION_KEY: {type(encryption_key)}")
-    if encryption_key:
-        print(f"DEBUG (routes.py): Length of ENCRYPTION_KEY: {len(encryption_key)}")
-        print(f"DEBUG (routes.py): ENCRYPTION_KEY ends with '=': {encryption_key.endswith('=')}")
-        print(f"DEBUG (routes.py): ENCRYPTION_KEY contains whitespace: {' ' in encryption_key or '\\n' in encryption_key or '\\r' in encryption_key}")
-
     if not encryption_key:
         return jsonify({'error': 'Encryption key not configured on the server. Please set the ENCRYPTION_KEY environment variable.'}), 500
     
