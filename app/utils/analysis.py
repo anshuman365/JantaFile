@@ -4,7 +4,7 @@ import PyPDF2 # Import the main PyPDF2 module
 from io import BytesIO
 from docx import Document
 from PIL import Image
-import exifread # Used for image metadata, though not directly in the PDF fix
+#import exifread # Used for image metadata, though not directly in the PDF fix
 
 class DocumentAnalyzer:
     @staticmethod
